@@ -1,8 +1,13 @@
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
-  await mongoose.connect("mongodb://localhost:27017/Fitness");
-  console.log("MongoDB Connected ");
+  try {
+    await mongoose.connect("mongodb://localhost:27017/Fitness");
+    console.log("MongoDB Connected ");
+  } catch (error) {
+    console.log(error.message);
+    
+  }
 };
 
 module.exports = connectDB;
