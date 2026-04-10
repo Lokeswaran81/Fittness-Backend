@@ -11,7 +11,7 @@
 // app.use('/auth',authRoutes)
 
 
-
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -27,11 +27,30 @@ const PORT = process.env.PORT || 3000;
 connectDB();
 
 // middlewares
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
 app.use(express.json());
 
 // routes
 app.use("/auth", authRoutes);
+
+const programRoutes = require("./routes/programRoutes");
+
+app.use("/api/programs", programRoutes);
+//cookies
+const cookieParser = require("cookie-parser");
+
+app.use(cookieParser());
+
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
+
+const programRoutes = require("./routes/programRoutes");
+app.use("/api/programs", programRoutes);
 
 app.get("/", (req, res) => {
   res.send("Fitness backend is running");

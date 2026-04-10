@@ -8,13 +8,14 @@
 
 // module.exports = authRoutes
 
-
 const express = require("express");
-const { login, signUp } = require("../controllers/authController");
+
+const { login, signUp, logout } = require("../controllers/authController");
 
 const authRoutes = express.Router();
 
 authRoutes.post("/login", login);
 authRoutes.post("/signup", signUp);
+authRoutes.post("/logout", logout);
 
 module.exports = authRoutes;
