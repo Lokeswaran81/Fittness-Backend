@@ -11,27 +11,25 @@
 // app.use('/auth',authRoutes)
 
 
-
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./Routes/authRoute.js");
+const homeContentRoutes = require("./Routes/homeContentRoute.js");
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// database connection
 connectDB();
 
-// middlewares
 app.use(cors());
 app.use(express.json());
 
-// routes
 app.use("/auth", authRoutes);
+app.use("/api/home-content", homeContentRoutes);
 
 app.get("/", (req, res) => {
   res.send("Fitness backend is running");

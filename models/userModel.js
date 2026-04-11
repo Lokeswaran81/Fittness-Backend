@@ -33,11 +33,9 @@
 
 
 
-
-
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   fullName: {
     type: String,
     required: true,
@@ -59,8 +57,6 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-});
+}, { timestamps: true });
 
-const userModel = mongoose.model("user", userSchema);
-
-module.exports = userModel;
+module.exports = mongoose.model("User", userSchema);

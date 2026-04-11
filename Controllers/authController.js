@@ -304,7 +304,12 @@ const signUp = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Signup successful",
-      user
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        emailAddress: user.emailAddress,
+        phoneNumber: user.phoneNumber,
+      },
     });
   } catch (error) {
     return res.status(500).json({
