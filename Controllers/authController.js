@@ -91,10 +91,10 @@
 //       });
 //     }
 //     console.log(confirmPassword);
+//         success: false,
 
 //     if (!confirmPassword) {
 //       return res.json({
-//         success: false,
 //         message: "confirmpassWord is required",
 //       });
 //     }
@@ -173,20 +173,15 @@ const login = async (req, res) => {
         message: "Invalid password",
       });
     }
-    // 🔥 JWT உருவாக்கு
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
-    // 🍪 Cookie-ல save பண்ணு
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // production → true
-      sameSite: "strict",
-    });
-
-    // ✅ response அனுப்பு
-    return res.status(200).json({
+      secure: false, 
+      sameSite: "lax", 
+    }).status(200).json({
       success: true,
       message: "Login successful",
       user: {
@@ -197,16 +192,6 @@ const login = async (req, res) => {
       },
     });
 
-    // return res.status(200).json({
-    //   success: true,
-    //   message: "Login successful",
-    //   user: {
-    //     id: user._id,
-    //     fullName: user.fullName,
-    //     emailAddress: user.emailAddress,
-    //     phoneNumber: user.phoneNumber,
-    //   },
-    // });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -344,5 +329,17 @@ const logout = (req, res) => {
   res.json({ success: true, message: "Logout successful" });
 };
 
-module.exports = { login, signUp, logout };
-// module.exports = { login, signUp };
+const profile = async (req, res) => {
+  console.log(req.user)
+  if (req.user) {
+    return res.json({
+      success: true,
+      user: req.user,
+    });
+  }
+  return res.json({
+    success: false,
+    message: "continue with login",
+  });
+};
+module.exports = { login, signUp, logout, profile };
