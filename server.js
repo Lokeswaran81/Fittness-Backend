@@ -17,7 +17,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./Routes/authRoute.js");
-
+const programRoutes = require("./Routes/programRoutes.js");
 dotenv.config();
 
 const app = express();
@@ -28,28 +28,15 @@ connectDB();
 
 // middlewares
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "http://localhost:5173",
   credentials: true
 }));
+app.use(cookieParser());
 app.use(express.json());
 
 // routes
 app.use("/auth", authRoutes);
 
-const programRoutes = require("./routes/programRoutes");
-
-app.use("/api/programs", programRoutes);
-//cookies
-const cookieParser = require("cookie-parser");
-
-app.use(cookieParser());
-
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
-}));
-
-const programRoutes = require("./routes/programRoutes");
 app.use("/api/programs", programRoutes);
 
 app.get("/", (req, res) => {
