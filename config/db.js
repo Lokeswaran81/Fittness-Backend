@@ -6,15 +6,11 @@
 //     console.log("MongoDB Connected ");
 //   } catch (error) {
 //     console.log(error.message);
-    
+
 //   }
 // };
 
 // module.exports = connectDB;
-
-
-
-
 
 const mongoose = require("mongoose");
 

@@ -83,7 +83,7 @@
 //         success: false,
 //         message: "passWord is required",
 //       });
-//     } 
+//     }
 //     if (passWord.length < 6) {
 //       return res.json({
 //         success: false,
@@ -132,9 +132,7 @@
 // };
 // module.exports = { login, signUp };
 
-
-
-
+const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcryptjs");
 const userModel = require("../models/userModel");
@@ -175,7 +173,19 @@ const login = async (req, res) => {
         message: "Invalid password",
       });
     }
+    // 🔥 JWT உருவாக்கு
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
+    // 🍪 Cookie-ல save பண்ணு
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // production → true
+      sameSite: "strict",
+    });
+
+    // ✅ response அனுப்பு
     return res.status(200).json({
       success: true,
       message: "Login successful",
@@ -186,6 +196,17 @@ const login = async (req, res) => {
         phoneNumber: user.phoneNumber,
       },
     });
+
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "Login successful",
+    //   user: {
+    //     id: user._id,
+    //     fullName: user.fullName,
+    //     emailAddress: user.emailAddress,
+    //     phoneNumber: user.phoneNumber,
+    //   },
+    // });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -200,8 +221,8 @@ const signUp = async (req, res) => {
   try {
     const { fullName, emailAddress, phoneNumber, passWord, confirmPassword } =
       req.body;
-      console.log(confirmPassword);
-      
+    console.log(confirmPassword);
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!fullName) {
@@ -267,7 +288,7 @@ const signUp = async (req, res) => {
       });
     }
     console.log(passWord == confirmPassword);
-    
+
     if (passWord != confirmPassword) {
       return res.status(400).json({
         success: false,
@@ -276,16 +297,16 @@ const signUp = async (req, res) => {
     }
 
     const existingUser = await userModel.findOne({
-      $or: [{ emailAddress }, { phoneNumber },{fullName}],
+      $or: [{ emailAddress }, { phoneNumber }, { fullName }],
     });
 
-    console.log("is user",existingUser);
-    
+    console.log("is user", existingUser);
 
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: "User already exists with this email or phone number or UserName",
+        message:
+          "User already exists with this email or phone number or UserName",
       });
     }
 
@@ -299,17 +320,11 @@ const signUp = async (req, res) => {
     });
 
     console.log(user);
-    
 
     return res.status(201).json({
       success: true,
       message: "Signup successful",
-      user: {
-        id: user._id,
-        fullName: user.fullName,
-        emailAddress: user.emailAddress,
-        phoneNumber: user.phoneNumber,
-      },
+      user
     });
   } catch (error) {
     return res.status(500).json({
@@ -319,5 +334,10 @@ const signUp = async (req, res) => {
     });
   }
 };
+const logout = (req, res) => {
+  res.clearCookie("token");
+  res.json({ success: true, message: "Logout successful" });
+};
 
-module.exports = { login, signUp };
+module.exports = { login, signUp, logout };
+// module.exports = { login, signUp };
