@@ -33,30 +33,72 @@
 
 
 
+// const mongoose = require("mongoose");
+
+// const userSchema = new mongoose.Schema({
+//   fullName: {
+//     type: String,
+//     required: true,
+//     trim: true,
+//   },
+//   emailAddress: {
+//     type: String,
+//     required: true,
+//     unique: true,
+//     lowercase: true,
+//     trim: true,
+//   },
+//   phoneNumber: {
+//     type: String,
+//     required: true,
+//     unique: true,
+//   },
+//   passWord: {
+//     type: String,
+//     required: true,
+//   },
+// }, { timestamps: true });
+
+// module.exports = mongoose.model("User", userSchema);
+
+
+
+
+
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  fullName: {
-    type: String,
-    required: true,
-    trim: true,
+const userSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    emailAddress: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    passWord: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["admin", "user"],
+      default: "user",
+    },
   },
-  emailAddress: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
-  phoneNumber: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  passWord: {
-    type: String,
-    required: true,
-  },
-}, { timestamps: true });
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("User", userSchema);
+const userModel = mongoose.model("User", userSchema);
+
+module.exports = userModel;
