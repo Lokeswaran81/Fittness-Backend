@@ -10,14 +10,13 @@
 // })
 // app.use('/auth',authRoutes)
 
-
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./Routes/authRoute.js");
 const homeContentRoutes = require("./Routes/homeContentRoute.js");
-
+const cookieParser = require("cookie-parser");
 const programRoutes = require("./Routes/programRoutes.js");
 dotenv.config();
 
@@ -26,12 +25,13 @@ const PORT = process.env.PORT || 3000;
 
 connectDB();
 
-app.use(cors());
 // middlewares
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 app.use(express.json());
 

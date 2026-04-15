@@ -179,19 +179,14 @@ const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, 
-      sameSite: "lax", 
-    }).status(200).json({
-      success: true,
-      message: "Login successful",
-      user: {
-        id: user._id,
-        fullName: user.fullName,
-        emailAddress: user.emailAddress,
-        phoneNumber: user.phoneNumber,
-      },
+      secure: false,
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
+    res
+      .status(200)
+      .json({ messge: "Login Successfully", success: true, user: user });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -200,7 +195,6 @@ const login = async (req, res) => {
     });
   }
 };
-
 // ---------------- SIGNUP ----------------
 const signUp = async (req, res) => {
   try {
@@ -330,7 +324,7 @@ const logout = (req, res) => {
 };
 
 const profile = async (req, res) => {
-  console.log(req.user)
+  console.log(req.user);
   if (req.user) {
     return res.json({
       success: true,

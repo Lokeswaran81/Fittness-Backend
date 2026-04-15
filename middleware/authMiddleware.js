@@ -3,6 +3,7 @@ const userModel = require("../models/userModel");
 
 const protect = async (req, res, next) => {
   const token = req.cookies?.token;
+  console.log("token", token);
 
   if (!token) {
     return res.status(401).json({ message: "No token" });
@@ -22,8 +23,7 @@ const protect = async (req, res, next) => {
     }
 
     req.user = user;
-    next(); 
-
+    next();
   } catch (error) {
     console.log(error.message);
 
