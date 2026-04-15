@@ -41,6 +41,12 @@ const userModel = require("../models/userModel");
 
 // check login token
 const protect = async (req, res, next) => {
+  const token = req.cookies?.token;
+
+  if (!token) {
+    return res.status(401).json({ message: "No token" });
+  }
+
   try {
     let token = null;
 

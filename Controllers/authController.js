@@ -401,22 +401,28 @@ const login = async (req, res) => {
       });
     }
 
-    // 🔥 NEW TOKEN WITH ROLE
     const token = generateToken(user);
 
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token, // 🔥 send token to frontend
-      user: {
-        id: user._id,
-        fullName: user.fullName,
-        emailAddress: user.emailAddress,
-        phoneNumber: user.phoneNumber,
-        role: user.role, // 🔥 VERY IMPORTANT
-      },
-    });
-
+    return res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false, // set true in production with HTTPS
+        sameSite: "lax",
+        maxAge: 24 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .json({
+        success: true,
+        message: "Login successful",
+        token, // remove this if you only want cookie-based auth
+        user: {
+          id: user._id,
+          fullName: user.fullName,
+          emailAddress: user.emailAddress,
+          phoneNumber: user.phoneNumber,
+          role: user.role,
+        },
+      });
   } catch (error) {
     return res.status(500).json({
       success: false,

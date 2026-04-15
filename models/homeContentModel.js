@@ -13,7 +13,7 @@ const statSchema = new mongoose.Schema(
       trim: true,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const whyCardSchema = new mongoose.Schema(
@@ -34,7 +34,7 @@ const whyCardSchema = new mongoose.Schema(
       trim: true,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const homeContentSchema = new mongoose.Schema(
@@ -134,7 +134,7 @@ const homeContentSchema = new mongoose.Schema(
       },
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const HomeContent = mongoose.model("HomeContent", homeContentSchema);

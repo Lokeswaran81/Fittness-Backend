@@ -61,6 +61,9 @@ const connectDB = require("./config/db");
 const authRoutes = require("./Routes/authRoute.js");
 const homeContentRoutes = require("./Routes/homeContentRoute.js");
 const uploadRoutes = require("./Routes/uploadRoute.js");
+const cookieParser = require("cookie-parser");
+const programRoutes = require("./Routes/programRoutes.js");
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -75,6 +78,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 
 // routes
