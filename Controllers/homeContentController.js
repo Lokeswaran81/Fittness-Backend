@@ -1,6 +1,6 @@
 const HomeContent = require("../models/homeContentModel");
 
-// GET home page content
+
 const getHomeContent = async (req, res) => {
   try {
     let content = await HomeContent.findOne();
@@ -23,12 +23,12 @@ const getHomeContent = async (req, res) => {
   }
 };
 
-// UPDATE full home page content
+
 const updateHomeContent = async (req, res) => {
   try {
     const { hero, stats, whyChooseUs, cta } = req.body;
-
     let content = await HomeContent.findOne();
+    console.log(content);
 
     if (!content) {
       content = await HomeContent.create({
@@ -42,7 +42,6 @@ const updateHomeContent = async (req, res) => {
       content.stats = stats || content.stats;
       content.whyChooseUs = whyChooseUs || content.whyChooseUs;
       content.cta = cta || content.cta;
-
       await content.save();
     }
 
